@@ -1,0 +1,15 @@
+.header {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.navigation {
+  display: flex;
+}
+
+.userLink {
+  margin: 0 10px 0 auto;
+}
