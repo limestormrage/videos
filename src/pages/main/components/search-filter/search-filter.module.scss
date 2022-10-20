@@ -1,0 +1,32 @@
+.searchFilter {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  min-width: 240px;
+}
+
+.searchFilterWrapper {
+  padding: 20px;
+  border: 1px solid #dce1e6;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.formItem {
+  padding-bottom: 18px;
+}
+
+.itemTitle {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  color: #818c99;
+  padding-bottom: 6px;
+}
+
+.formSelector {
+  border: 1px solid #dce1e6;
+  border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+}
