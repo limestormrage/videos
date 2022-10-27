@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent, useEffect, useRef, useState,
+} from 'react';
 import cn from 'classnames';
 import styles from './search-form.module.scss';
 import { ReactComponent as SearchIcon } from './search.svg';
@@ -12,6 +14,8 @@ function SearchForm(): JSX.Element {
   const [searchState, setSearchState] = useState(initialState);
   const [isSearching, setIsSearching] = useState<boolean>(Boolean(searchState));
   const [openFilter, setOpenFilter] = useState(false);
+  const filterMenuRef = useRef<HTMLDivElement>(null);
+  const buttonFilterRef = useRef<HTMLButtonElement>(null);
 
   const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>): void => {
     const { value } = target;
@@ -21,7 +25,32 @@ function SearchForm(): JSX.Element {
 
   const resetSearchForm = (): void => {
     setSearchState(initialState);
+    setOpenFilter(false);
   };
+
+  const handleToggleFilterMenu = (): void => {
+    setOpenFilter(!openFilter);
+  };
+
+  useEffect(() => {
+    const handleClick = (e: Event): void => {
+      if (!(e.target instanceof HTMLElement)) {
+        return;
+      }
+
+      if (
+        !filterMenuRef.current?.contains(e.target)
+        && !buttonFilterRef.current?.contains(e.target)
+        && openFilter
+      ) {
+        setOpenFilter(false);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return (() => document.removeEventListener('click', handleClick));
+  }, [openFilter]);
 
   useEffect(() => {
     setIsSearching(Boolean(searchState));
@@ -40,8 +69,9 @@ function SearchForm(): JSX.Element {
       <div className={styles.searchControls}>
         <button
           className={cn(styles.searchButton, styles.searchButtonParams)}
+          ref={buttonFilterRef}
           type="button"
-          onClick={() => setOpenFilter(!openFilter)}
+          onClick={handleToggleFilterMenu}
         >
           <span className={styles.searchButtonText}>Фильтры</span>
           <FilterIcon
@@ -75,7 +105,7 @@ function SearchForm(): JSX.Element {
           value={searchState}
         />
       </form>
-      {openFilter && <SearchFilter />}
+      {openFilter && <SearchFilter ref={filterMenuRef} />}
     </div>
   );
 }
